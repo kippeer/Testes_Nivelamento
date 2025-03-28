@@ -1,0 +1,5 @@
+CÓDIGO,PROCEDIMENTO,OD,AMB
+10101,Consulta médica,Segmentação Obrigatória,Procedimento Ambulatorial
+10102,Exame laboratorial,Segmentação Não Obrigatória,Procedimento Ambulatorial
+10103,Cirurgia,Segmentação Obrigatória,Procedimento Não Ambulatorial
+10104,Atendimento domiciliar,Segmentação Não Obrigatória,Procedimento Não Ambulatorial
