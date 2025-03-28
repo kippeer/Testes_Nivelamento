@@ -157,3 +157,4 @@ A base de dados do MySQL deve estar configurada corretamente, com as permissões
 #####################################################
 
 ## QUESTAO 4
+
