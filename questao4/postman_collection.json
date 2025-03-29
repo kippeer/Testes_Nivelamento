@@ -1,0 +1,118 @@
+{
+  "info": {
+    "_postman_id": "your-collection-id",
+    "name": "Operadoras de Saúde API",
+    "description": "Collection for testing the Healthcare Operators Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Search Operators",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=unimed",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "unimed",
+              "description": "Search query for healthcare operators"
+            }
+          ]
+        },
+        "description": "Search for healthcare operators by name, trading name, city, or representative"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Operators - Empty Query",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "search"]
+        },
+        "description": "Test empty search query"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Operators - Partial Match",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=saude",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "saude",
+              "description": "Partial search term"
+            }
+          ]
+        },
+        "description": "Test partial matching functionality"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Operators - By Address",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=centro",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "centro",
+              "description": "Search by address or neighborhood"
+            }
+          ]
+        },
+        "description": "Search operators by address information"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Operators - By Representative",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=diretor",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "diretor",
+              "description": "Search by representative name or position"
+            }
+          ]
+        },
+        "description": "Search operators by representative information"
+      },
+      "response": []
+    }
+  ]
+}
