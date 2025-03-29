@@ -38,7 +38,42 @@ def criar_tabela(conn):
     except mysql.connector.Error as err:
         print(f"Erro ao criar tabela: {err}")
 
-# Função para importar dados de arquivos CSV para a tabela
+# Função para criar a tabela de operadoras_ativas
+def criar_tabela_operadoras(conn):
+    try:
+        cursor = conn.cursor()
+        query = """
+        CREATE TABLE IF NOT EXISTS operadoras_ativas (
+            id_operadora INT AUTO_INCREMENT PRIMARY KEY,
+            nome_operadora VARCHAR(255),
+            cnpj VARCHAR(14) UNIQUE,
+            razao_social VARCHAR(255),
+            nome_fantasia VARCHAR(255),
+            modalidade VARCHAR(255),
+            logradouro VARCHAR(255),
+            numero VARCHAR(50),
+            complemento VARCHAR(255),
+            bairro VARCHAR(100),
+            cidade VARCHAR(100),
+            uf VARCHAR(2),
+            cep VARCHAR(10),
+            ddd VARCHAR(3),
+            telefone VARCHAR(15),
+            fax VARCHAR(15),
+            endereco_eletronico VARCHAR(255),
+            representante VARCHAR(255),
+            cargo_representante VARCHAR(255),
+            regiao_de_comercializacao VARCHAR(255),
+            data_registro_ans DATE
+        );
+        """
+        cursor.execute(query)
+        conn.commit()
+        print("Tabela de operadoras criada com sucesso!")
+    except mysql.connector.Error as err:
+        print(f"Erro ao criar tabela de operadoras: {err}")
+
+# Função para importar dados de arquivos CSV para a tabela demonstrativos_contabeis
 def importar_csv_para_tabela(conn, pasta_csv):
     try:
         cursor = conn.cursor()
@@ -63,23 +98,29 @@ def importar_csv_para_tabela(conn, pasta_csv):
     except Exception as e:
         print(f"Erro inesperado ao importar os dados: {e}")
 
-# Função para criar a tabela de operadoras_ativas
-def criar_tabela_operadoras(conn):
+# Função para importar o arquivo Relatorio_cadop.csv
+def importar_relatorio_cadop(conn, pasta_csv):
     try:
         cursor = conn.cursor()
-        query = """
-        CREATE TABLE IF NOT EXISTS operadoras_ativas (
-            id_operadora INT PRIMARY KEY,
-            nome_operadora VARCHAR(255),
-            cnpj VARCHAR(14),
-            status VARCHAR(50)
-        );
-        """
-        cursor.execute(query)
+        caminho_arquivo = os.path.join(pasta_csv, "Relatorio_cadop.csv")
+        with open(caminho_arquivo, 'r', encoding='utf-8') as f:
+            csv_reader = csv.reader(f, delimiter=',')
+            next(csv_reader)  # Pular o cabeçalho do CSV
+            for row in csv_reader:
+                query = """
+                INSERT INTO operadoras_ativas (cnpj, nome_operadora, razao_social, nome_fantasia, modalidade, 
+                                                logradouro, numero, complemento, bairro, cidade, uf, cep, 
+                                                ddd, telefone, fax, endereco_eletronico, representante, 
+                                                cargo_representante, regiao_de_comercializacao, data_registro_ans)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """
+                cursor.execute(query, row)  # Passando todos os valores da linha para a query
         conn.commit()
-        print("Tabela de operadoras criada com sucesso!")
+        print("Dados do arquivo Relatorio_cadop.csv importados com sucesso!")
     except mysql.connector.Error as err:
-        print(f"Erro ao criar tabela de operadoras: {err}")
+        print(f"Erro ao importar dados do Relatorio_cadop.csv: {err}")
+    except Exception as e:
+        print(f"Erro inesperado ao importar os dados do Relatorio_cadop.csv: {e}")
 
 # Função para responder à primeira consulta (último trimestre)
 def consultar_top_10_trimestre(conn):
@@ -150,6 +191,7 @@ def main():
     criar_tabela(conn)
     criar_tabela_operadoras(conn)
     importar_csv_para_tabela(conn, pasta_csv)
+    importar_relatorio_cadop(conn, pasta_csv)
     consultar_top_10_trimestre(conn)
     consultar_top_10_ano(conn)
 
